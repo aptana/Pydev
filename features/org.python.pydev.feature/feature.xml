@@ -181,11 +181,14 @@ This Agreement is governed by the laws of the State of New York and the intellec
          install-size="300"
          version="0.9.7.1"/>
 
+	<!--
+	Remove django from open gda
    <plugin
          id="org.python.pydev.django"
          download-size="300"
          install-size="300"
          version="0.9.7.1"/>
+    -->
 
 	
    <plugin
@@ -223,10 +226,12 @@ This Agreement is governed by the laws of the State of New York and the intellec
          download-size="160"
          install-size="160"
          version="0.9.7.1"/>
+	<!--
+	Remove red_core from open gda
    <plugin
          id="org.python.pydev.red_core"
          download-size="160"
          install-size="160"
          version="0.9.7.1"/>
-
+    -->
 </feature>
