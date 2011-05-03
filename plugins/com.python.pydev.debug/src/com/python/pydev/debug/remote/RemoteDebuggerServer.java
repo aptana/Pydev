@@ -153,8 +153,8 @@ public class RemoteDebuggerServer extends AbstractRemoteDebugger implements Runn
             target.startTransmission(socket);
             target.initialize();
             this.addTarget(target);
-        } catch (IOException e) {        
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.debug(e);
         }        
     }
 

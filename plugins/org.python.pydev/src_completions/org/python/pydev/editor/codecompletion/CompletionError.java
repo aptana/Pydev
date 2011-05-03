@@ -16,6 +16,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposalExtension4;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.plugin.PydevPlugin;
 import org.python.pydev.ui.UIConstants;
 
@@ -63,7 +64,7 @@ public class CompletionError implements ICompletionProposal, IPyCompletionPropos
         if(message == null){
             //NullPointerException
             if(error instanceof NullPointerException){
-                error.printStackTrace();
+                Log.debug(error);
                 message = "NullPointerException";
             }else{
                 message = "Null error message";

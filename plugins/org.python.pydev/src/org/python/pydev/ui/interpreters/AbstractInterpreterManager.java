@@ -438,7 +438,7 @@ public abstract class AbstractInterpreterManager implements IInterpreterManager 
                                 }
                                 
                             });
-                            System.out.println("Finished restoring information for: "+info.executableOrJar+" at: "+info.getExeAsFileSystemValidPath());
+                            Log.debug("Finished restoring information for: "+info.executableOrJar+" at: "+info.getExeAsFileSystemValidPath());
                         }
                     }
                     

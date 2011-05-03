@@ -101,6 +101,7 @@ import org.python.pydev.core.callbacks.ICallbackWithListeners;
 import org.python.pydev.core.docutils.PyPartitionScanner;
 import org.python.pydev.core.docutils.PySelection;
 import org.python.pydev.core.docutils.SyntaxErrorException;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.core.parser.ISimpleNode;
 import org.python.pydev.editor.actions.FirstCharAction;
 import org.python.pydev.editor.actions.OfflineAction;
@@ -308,7 +309,7 @@ public class PyEdit extends PyEditProjection implements IPyEdit, IGrammarVersion
 	                    }
 	                } catch (Exception e) {
 	                    //ignore
-	                    e.printStackTrace();
+	                    Log.debug(e);
 	                }
 	            }
 	        }

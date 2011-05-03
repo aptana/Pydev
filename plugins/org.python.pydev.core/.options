@@ -1,0 +1,4 @@
+# Debugging options for the org.python.pydev.core plugin
+
+# Turn on general debugging for PyDev.
+org.python.pydev.core/debug=false

@@ -405,7 +405,7 @@ public class PydevPlugin extends AbstractUIPlugin implements Preferences.IProper
      * @param errorLevel IStatus.[OK|INFO|WARNING|ERROR]
      */
     public static void log(int errorLevel, String message, Throwable e, boolean printToConsole) {
-        if(printToConsole){
+        if(Log.isDebugging() && printToConsole){
             if(errorLevel == IStatus.ERROR){
                 System.out.println("Error received...");
             }else{
@@ -418,11 +418,13 @@ public class PydevPlugin extends AbstractUIPlugin implements Preferences.IProper
             }
         }
         
-        try {
-            Status s = new Status(errorLevel, getPluginID(), errorLevel, message, e);
-            getDefault().getLog().log(s);
-        } catch (Throwable e1) {
-            //logging should never fail!
+        if (getDefault() != null) {
+            try {
+                Status s = new Status(errorLevel, getPluginID(), errorLevel, message, e);
+                getDefault().getLog().log(s);
+            } catch (Throwable e1) {
+                //logging should never fail!
+            }
         }
     }
 
@@ -660,6 +662,5 @@ public class PydevPlugin extends AbstractUIPlugin implements Preferences.IProper
         }
         return plugin.colorCache;
     }
-    
 
 }

@@ -19,6 +19,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.core.uiutils.AsynchronousProgressMonitorDialog;
 
 /**
@@ -47,7 +48,7 @@ public class ProgressOperation extends WorkspaceModifyOperation {
             action.run();
             monitor.done();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.debug(e);
         }
 
     }
@@ -66,9 +67,9 @@ public class ProgressOperation extends WorkspaceModifyOperation {
             monitorDialog.run(false, false, operation);
             // Perform the action
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            Log.debug(e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Log.debug(e);
         }
 
     }

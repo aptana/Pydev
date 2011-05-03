@@ -27,6 +27,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorExtension;
 import org.eclipse.ui.texteditor.ITextEditorExtension2;
 import org.python.pydev.core.docutils.PySelection;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.core.structure.FastStringBuffer;
 import org.python.pydev.editor.PyEdit;
 import org.python.pydev.editor.autoedit.DefaultIndentPrefs;
@@ -259,7 +260,7 @@ public abstract class PyAction extends Action implements IEditorActionDelegate {
         }catch(IllegalStateException x){
             //ignore, workbench has still not been created
         }
-        e.printStackTrace();
+        Log.debug(e);
     }
 
 

@@ -388,7 +388,7 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager, S
             String message = e.getMessage();
             if(message == null){
                 if(e instanceof NullPointerException){
-                    e.printStackTrace();
+                    Log.debug(e);
                     message = "NullPointerException";
                 }else{
                     message = "Null error message";
@@ -731,7 +731,7 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager, S
 
             
         }else{
-            System.err.println("Module passed in is null!!");
+            Log.debug("Module passed in is null!!");
         }
         
         return EMPTY_ITOKEN_ARRAY;
