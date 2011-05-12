@@ -43,28 +43,19 @@ def main():
 
     NOSE_FRAMEWORK = 1
     PY_TEST_FRAMEWORK = 2
+    test_framework = 0 #Default (pydev)
     try:
-        if found_other_test_framework_param:
-            test_framework = 0 #Default (pydev)
-            if found_other_test_framework_param == NOSE_PARAMS:
-                import nose
-                test_framework = NOSE_FRAMEWORK
-                
-            elif found_other_test_framework_param == PY_TEST_PARAMS:
-                import pytest
-                test_framework = PY_TEST_FRAMEWORK
-                
-            else:
-                raise ImportError()
-                
-        else:
-            raise ImportError()
-        
+        if found_other_test_framework_param == NOSE_PARAMS:
+            import nose
+            test_framework = NOSE_FRAMEWORK
+        elif found_other_test_framework_param == PY_TEST_PARAMS:
+            import pytest
+            test_framework = PY_TEST_FRAMEWORK
     except ImportError:
-        if found_other_test_framework_param:
-            sys.stderr.write('Warning: Could not import the test runner: %s. Running with the default pydev unittest runner.\n' % (
-                found_other_test_framework_param,))
-            
+        sys.stderr.write('Warning: Could not import the test runner: %s. Running with the default pydev unittest runner.\n' % (
+            found_other_test_framework_param,))
+
+    if test_framework == 0:
         pydev_runfiles.main(configuration)
         
     else:
