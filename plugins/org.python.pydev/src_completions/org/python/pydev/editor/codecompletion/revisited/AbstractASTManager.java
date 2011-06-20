@@ -53,6 +53,7 @@ import org.python.pydev.parser.jython.ast.ImportFrom;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.aliasType;
 import org.python.pydev.parser.visitors.NodeUtils;
+import org.python.pydev.plugin.PydevPlugin;
 
 public abstract class AbstractASTManager implements ICodeCompletionASTManager {
     
@@ -373,7 +374,7 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
             String message = e.getMessage();
             if(message == null){
                 if(e instanceof NullPointerException){
-                    e.printStackTrace();
+                    PydevPlugin.log(e);
                     message = "NullPointerException";
                 }else{
                     message = "Null error message";
@@ -716,7 +717,7 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
 
             
         }else{
-            System.err.println("Module passed in is null!!");
+            PydevPlugin.log("Module passed in is null!!");
         }
         
         return EMPTY_ITOKEN_ARRAY;
@@ -1155,10 +1156,11 @@ public abstract class AbstractASTManager implements ICodeCompletionASTManager {
                 if(modRep.equals(tok)){
                     String act = state.getActivationToken();
                     Tuple<IModule, String> r = findOnImportedMods(importedModule, tok, state, act, currentModuleName);
-                    if(r == null){
-                        return null;
+                    if(r != null){
+                        return new Tuple3<IModule, String, IToken>(r.o1, r.o2, importedModule);
                     }
-                    return new Tuple3<IModule, String, IToken>(r.o1, r.o2, importedModule);
+                    //Note, if r==null, even though the name matched, keep on going (to handle cases of 
+                    //try..except ImportError, as we cannot be sure of which version will actually match).
                 }
             }
         }   
