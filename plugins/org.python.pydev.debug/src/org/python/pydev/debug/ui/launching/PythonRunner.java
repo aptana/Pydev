@@ -30,6 +30,7 @@ import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 import org.python.copiedfromeclipsesrc.JDTNotAvailableException;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.debug.core.Constants;
 import org.python.pydev.debug.core.PydevDebugPlugin;
 import org.python.pydev.debug.model.PyDebugTarget;
@@ -44,7 +45,7 @@ import org.python.pydev.runners.SimpleRunner;
  * Launches Python process, and connects it to Eclipse's debugger.
  * Waits for process to complete.
  * 
- * Modelled after org.eclipse.jdt.internal.launching.StandardVMDebugger.
+ * Modeled after org.eclipse.jdt.internal.launching.StandardVMDebugger.
  */
 public class PythonRunner {
 
@@ -71,7 +72,7 @@ public class PythonRunner {
             }
             
         }catch (final JDTNotAvailableException e) {
-            PydevPlugin.log(e);
+            Log.log(e);
             final Display display = Display.getDefault();
             display.syncExec(new Runnable(){
 

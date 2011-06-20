@@ -36,7 +36,6 @@ import org.python.pydev.editor.codecompletion.revisited.ModulesKeyTreeMap;
 import org.python.pydev.editor.codecompletion.revisited.PythonPathHelper;
 import org.python.pydev.logging.DebugSettings;
 import org.python.pydev.parser.jython.SimpleNode;
-import org.python.pydev.plugin.PydevPlugin;
 
 
 /**
@@ -392,7 +391,7 @@ public abstract class AbstractAdditionalDependencyInfo extends AbstractAdditiona
                     
             }
         } catch (Exception e) {
-            PydevPlugin.log(e);
+            Log.log(e);
         }
         return addAstInfo;
     }
@@ -440,6 +439,21 @@ public abstract class AbstractAdditionalDependencyInfo extends AbstractAdditiona
             }
             
             super.restoreSavedInfo(readFromFile.o1);
+        }
+    }
+
+    protected void addInfoToModuleOnRestoreInsertCommand(Tuple<ModulesKey, List<IInfo>> data) {
+        completeIndex.add(new CompleteIndexKey(data.o1), null);
+        
+        //current way (saves a list of iinfo)
+        for(Iterator<IInfo> it = data.o2.iterator();it.hasNext();){
+            IInfo info = it.next();
+            if(info.getPath() == null || info.getPath().length() == 0){
+                this.add(info, TOP_LEVEL);
+                
+            }else{
+                this.add(info, INNER);
+            }
         }
     }
 

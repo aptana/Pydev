@@ -88,7 +88,7 @@ public class SimpleRunner {
                 env = createEnvWithPythonpath(pythonPathEnvStr, pythonNature, manager);
                 
             } catch (Exception e) {
-                PydevPlugin.log(e);
+                Log.log(e);
                 //We cannot get it. Log it and keep with the default.
                 env = getDefaultSystemEnvAsArray(pythonNature, removePythonpathFromDefaultEnv);
             }
@@ -296,7 +296,7 @@ public class SimpleRunner {
             
             paths.add(0, REF.getFileAbsolutePath(PydevPlugin.getScriptWithinPySrc("pydev_sitecustomize")));
         } catch (CoreException e) {
-            PydevPlugin.log(e);
+            Log.log(e);
         }
         
         String separator = getPythonPathSeparator();
@@ -418,13 +418,16 @@ public class SimpleRunner {
             std.start();
             err.start();
             
-            
-            try {
-                monitor.setTaskName("Waiting for process to finish.");
-                monitor.worked(5);
-                process.waitFor(); //wait until the process completion.
-            } catch (InterruptedException e1) {
-                throw new RuntimeException(e1);
+            boolean interrupted = true;
+            while(interrupted){
+                interrupted = false;
+                try {
+                    monitor.setTaskName("Waiting for process to finish.");
+                    monitor.worked(5);
+                    process.waitFor(); //wait until the process completion.
+                } catch (InterruptedException e1) {
+                    interrupted = true;
+                }
             }
 
             try {
@@ -443,7 +446,7 @@ public class SimpleRunner {
                 throw new CoreException(PydevPlugin.makeStatus(IStatus.ERROR, "Error creating process - got null process("
                         + executionString + ")", new Exception("Error creating process - got null process.")));
             } catch (CoreException e) {
-                PydevPlugin.log(IStatus.ERROR, e.getMessage(), e);
+                Log.log(IStatus.ERROR, e.getMessage(), e);
             }
 
         }
