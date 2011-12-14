@@ -20,7 +20,7 @@ public class DjPartitionerSwitchStrategy extends PartitionerSwitchStrategy {
         { "{%", "%}" }, 
         { "{{", "}}" }
     };
-
+    
     /**
      * 
      */

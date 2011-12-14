@@ -69,3 +69,17 @@ plugins/com.python.pydev.runalltests/Only.Pydev.launch
 plugins/com.python.pydev.docs/merged_homepage/*.rst_html
 data_temporary_for_testing
 plugins/jdt_plugins/
+builders/org.python.pydev.build/build.properties
+
+# Mac OS X stuff
+
+Desktop DF
+Desktop DB
+.Spotlight-V100
+.DS_Store
+.Trashes
+.com.apple.timemachine.supported
+.fseventsd
+.syncinfo
+.TemporaryItems
+._.*
