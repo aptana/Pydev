@@ -24,21 +24,21 @@ import org.python.pydev.editor.actions.PyAction;
 import org.python.pydev.editor.codecompletion.revisited.visitors.AssignDefinition;
 import org.python.pydev.editor.model.ItemPointer;
 import org.python.pydev.editor.refactoring.AbstractPyRefactoring;
+import org.python.pydev.editor.refactoring.HierarchyNodeModel;
+import org.python.pydev.editor.refactoring.IPyRefactoring2;
 import org.python.pydev.editor.refactoring.RefactoringRequest;
 import org.python.pydev.editor.refactoring.TooManyMatchesException;
 import org.python.pydev.parser.visitors.scope.ASTEntry;
 
-import com.python.pydev.refactoring.IPyRefactoring2;
 import com.python.pydev.refactoring.wizards.rename.PyRenameEntryPoint;
 import com.python.pydev.refactoring.wizards.rename.PyRenameRefactoringWizard;
-import com.python.pydev.ui.hierarchy.HierarchyNodeModel;
 
 /**
  * This is the entry point for any refactoring that we implement.
  * 
  * @author Fabio
  */
-public class Refactorer extends AbstractPyRefactoring implements IPyRefactoring2{
+public class Refactorer extends AbstractPyRefactoring implements IPyRefactoring2 {
     
     public String getName() {
         return "PyDev Extensions Refactorer";
@@ -74,6 +74,7 @@ public class Refactorer extends AbstractPyRefactoring implements IPyRefactoring2
     
     
     // --------------------------------------------------------- IPyRefactoring2
+    @Override
     public boolean areAllInSameClassHierarchy(List<AssignDefinition> defs) {
         return new RefactorerFinds(this).areAllInSameClassHierarchy(defs);
     }

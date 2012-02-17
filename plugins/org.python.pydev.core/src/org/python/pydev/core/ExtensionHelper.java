@@ -44,6 +44,7 @@ public class ExtensionHelper {
     public static final String PYDEV_SIMPLE_ASSIST = "org.python.pydev.pydev_simpleassist";
     public static final String PYDEV_ORGANIZE_IMPORTS = "org.python.pydev.pydev_organize_imports";
     public static final String PYDEV_REFACTORING = "org.python.pydev.pydev_refactoring";
+    public static final String PYDEV_USER_REFACTORING = "org.python.pydev.pydev_user_refactoring";
     public static final String PYDEV_QUICK_OUTLINE = "org.python.pydev.pydev_quick_outline";
     public static final String PYDEV_PYEDIT_LISTENER = "org.python.pydev.pydev_pyedit_listener";
     public static final String PYDEV_PREFERENCES_PROVIDER = "org.python.pydev.pydev_preferences_provider";
@@ -83,20 +84,15 @@ public class ExtensionHelper {
     
     /**
      * @param type  the name of the extension
-     * @param allowOverride  if true, the last registered participant will be
-     *                       returned, thus "overriding" any previously
-     *                       registered participants. If false, an exception
-     *                       is thrown if more than one participant is
-     *                       registered.
      * @return  the participant for the given extension type, or null if none
      *          is registered.
      */
-    public static Object getParticipant(String type, boolean allowOverride) {
+    public static Object getParticipant(String type) {
         List<Object> participants = getParticipants(type);
         if (participants.isEmpty()){
             return null;
         }
-        if (!allowOverride && participants.size() > 1) {
+        if (participants.size() > 1) {
             // only one participant may be used for this
             throw new RuntimeException("More than one participant is registered for type:"+type);
         }

@@ -20,12 +20,12 @@ import org.python.pydev.core.structure.FastStringBuffer;
 import org.python.pydev.editor.codecompletion.revisited.ProjectModulesManager;
 import org.python.pydev.editor.codecompletion.revisited.modules.CompiledModule;
 import org.python.pydev.editor.codecompletion.revisited.modules.SourceModule;
+import org.python.pydev.editor.refactoring.HierarchyNodeModel;
 import org.python.pydev.editor.refactoring.RefactoringRequest;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.plugin.nature.PythonNature;
 
 import com.python.pydev.analysis.additionalinfo.AdditionalInfoTestsBase;
-import com.python.pydev.ui.hierarchy.HierarchyNodeModel;
 
 public class ClassHierarchySearchTest extends AdditionalInfoTestsBase  {
 

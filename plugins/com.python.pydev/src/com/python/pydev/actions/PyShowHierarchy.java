@@ -21,11 +21,11 @@ import org.python.pydev.core.uiutils.AsynchronousProgressMonitorDialog;
 import org.python.pydev.editor.actions.PyAction;
 import org.python.pydev.editor.actions.refactoring.PyRefactorAction;
 import org.python.pydev.editor.refactoring.AbstractPyRefactoring;
+import org.python.pydev.editor.refactoring.HierarchyNodeModel;
 import org.python.pydev.editor.refactoring.IPyRefactoring;
+import org.python.pydev.editor.refactoring.IPyRefactoring2;
 import org.python.pydev.editor.refactoring.RefactoringRequest;
 
-import com.python.pydev.refactoring.IPyRefactoring2;
-import com.python.pydev.ui.hierarchy.HierarchyNodeModel;
 import com.python.pydev.ui.hierarchy.PyHierarchyView;
 
 /**

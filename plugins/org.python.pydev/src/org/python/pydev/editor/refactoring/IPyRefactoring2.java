@@ -4,7 +4,7 @@
  * Please see the license.txt included with this distribution for details.
  * Any modifications to this file must keep this entire header intact.
  */
-package com.python.pydev.refactoring;
+package org.python.pydev.editor.refactoring;
 
 import java.io.File;
 import java.util.HashSet;
@@ -15,10 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.python.pydev.core.Tuple;
 import org.python.pydev.editor.codecompletion.revisited.visitors.AssignDefinition;
-import org.python.pydev.editor.refactoring.RefactoringRequest;
 import org.python.pydev.parser.visitors.scope.ASTEntry;
-
-import com.python.pydev.ui.hierarchy.HierarchyNodeModel;
 
 /**
  * This is an additional interface for refactoring, so that other actions (and not only the
