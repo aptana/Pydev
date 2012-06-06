@@ -45,7 +45,7 @@ import org.python.util.PythonInterpreter;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class JythonPlugin extends AbstractUIPlugin implements IStartup {
+public class JythonPlugin extends AbstractUIPlugin {
     
     private static final boolean DEBUG = false;
     public static boolean DEBUG_RELOAD = true;
@@ -602,14 +602,15 @@ public class JythonPlugin extends AbstractUIPlugin implements IStartup {
     public static IInteractiveConsole newInteractiveConsole() {
         return new InteractiveConsoleWrapper();
     }
+    
 
 	/**
-	 * Create the PyDev Scripting as part of the Eclipse startup. This is done
-	 * as part of startup so that future creations of IPythonInterpreter (with
-	 * newPythonInterpreter) don't cause the PyDev Scripting console to pop-up
-	 * on top of the current interactive console.
+	 * Create the PyDev Scripting as part of the Eclipse startup. This can be
+	 * done as part of startup so that future creations of IPythonInterpreter
+	 * (with newPythonInterpreter) don't cause the PyDev Scripting console to
+	 * pop-up on top of the current interactive console.
 	 */
-	public void earlyStartup() {
+	public void createPyDevScriptingConsole() {
 		if (fConsole == null) {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
@@ -618,4 +619,5 @@ public class JythonPlugin extends AbstractUIPlugin implements IStartup {
 			});
 		}
 	}
+    
 }

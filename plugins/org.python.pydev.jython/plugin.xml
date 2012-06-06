@@ -18,7 +18,7 @@
    <extension
          point="org.eclipse.ui.startup">
       <startup
-            class="org.python.pydev.jython.JythonPlugin"></startup>
+            class="org.python.pydev.jython.JythonPluginEarlyStartup"></startup>
    </extension>
 
 </plugin>
