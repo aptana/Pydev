@@ -7,7 +7,10 @@
 package org.python.pydev.plugin.nature;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -15,6 +18,8 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.python.pydev.core.ICodeCompletionASTManager;
@@ -27,6 +32,7 @@ import org.python.pydev.core.IToken;
 import org.python.pydev.core.MisconfigurationException;
 import org.python.pydev.core.PropertiesHelper;
 import org.python.pydev.core.PythonNatureWithoutProjectException;
+import org.python.pydev.core.log.Log;
 import org.python.pydev.editor.codecompletion.revisited.SystemASTManager;
 
 /**
@@ -40,7 +46,7 @@ public class SystemPythonNature extends AbstractPythonNature implements IPythonN
      * @author Fabio
      *
      */
-    private final class SystePythonPathNature implements IPythonPathNature {
+    private final class SystemPythonPathNature implements IPythonPathNature {
         public void setVariableSubstitution(Map<String, String> variableSubstitution) throws CoreException {
             throw new RuntimeException("Not implemented");
         }
@@ -99,8 +105,41 @@ public class SystemPythonNature extends AbstractPythonNature implements IPythonN
             return SystemPythonNature.this;
         }
 
+        /**
+         * Returns the complete workspace python path which is composed of the interpreter's python
+         * path, followed by the workspace projects' combined python paths
+         */
         public List<String> getCompleteProjectPythonPath(IInterpreterInfo interpreter, IInterpreterManager info) {
-            return interpreter.getPythonPath();
+            //we need to get the natures matching the one selected in all the projects.
+            IWorkspace w = ResourcesPlugin.getWorkspace();
+            Collection<String> pythonpath = new LinkedHashSet<String>();
+
+            // Add the workspace python-path, before the per-project python-paths
+            // This ensure that the python console we run has the same python-path as an external IPython instance
+            pythonpath.addAll(interpreter.getPythonPath());
+
+            // Iterate over all the workspace projects adding the individual python-paths
+            for(IProject p:w.getRoot().getProjects()){
+                PythonNature nature = PythonNature.getPythonNature(p);
+                try{
+                    if(nature != null){
+                        if(nature.getRelatedInterpreterManager() == info){
+                            List<String> completeProjectPythonPath = nature.getPythonPathNature().
+                                    getCompleteProjectPythonPath(interpreter, info);
+                            if(completeProjectPythonPath != null){
+                                pythonpath.addAll(completeProjectPythonPath);
+                            }else{
+                                Log.logInfo("Unable to get pythonpath for project: "+nature.getProject()+" (initialization not finished).");
+                            }
+                        }
+                    }
+                }catch(Exception e){
+                    Log.log(e);
+                }
+            }
+            List<String> ret = new ArrayList<String>();
+            ret.addAll(pythonpath);
+            return ret;
         }
 
         public void clearCaches() {
@@ -199,7 +238,7 @@ public class SystemPythonNature extends AbstractPythonNature implements IPythonN
     }
 
     public IPythonPathNature getPythonPathNature() {
-        return new SystePythonPathNature();
+        return new SystemPythonPathNature();
     }
 
     public String resolveModule(String file) throws MisconfigurationException {
