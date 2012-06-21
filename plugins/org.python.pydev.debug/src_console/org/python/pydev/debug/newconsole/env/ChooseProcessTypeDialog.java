@@ -8,11 +8,9 @@ package org.python.pydev.debug.newconsole.env;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.ui.DebugUITools;
@@ -39,11 +37,12 @@ import org.python.pydev.debug.newconsole.prefs.InteractiveConsolePrefs;
 import org.python.pydev.editor.PyEdit;
 import org.python.pydev.plugin.PydevPlugin;
 import org.python.pydev.plugin.nature.PythonNature;
+import org.python.pydev.plugin.nature.SystemPythonNature;
 
 /**
  * Helper to choose which kind of jython run will it be.
  */
-final class ChooseProcessTypeDialog extends Dialog {
+public final class ChooseProcessTypeDialog extends Dialog {
     
     private Button checkboxForCurrentEditor;
 
@@ -270,32 +269,26 @@ final class ChooseProcessTypeDialog extends Dialog {
                         interpreter, this.interpreterManager)), nature);
 
             }
-            
-            //we need to get the natures matching the one selected in all the projects.
-            IWorkspace w = ResourcesPlugin.getWorkspace();
-            HashSet<String> pythonpath = new HashSet<String>();
-            for(IProject p:w.getRoot().getProjects()){
+
+            // Iterate over all the workspace projects adding the individual python-paths
+            for(IProject p : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
                 PythonNature nature = PythonNature.getPythonNature(p);
                 try{
                     if(nature != null){
                         if(nature.getRelatedInterpreterManager() == this.interpreterManager){
                             natures.add(nature);
-                            List<String> completeProjectPythonPath = nature.getPythonPathNature().
-                                    getCompleteProjectPythonPath(interpreter, this.interpreterManager);
-                            if(completeProjectPythonPath != null){
-                                pythonpath.addAll(completeProjectPythonPath);
-                            }else{
-                                Log.logInfo("Unable to get pythonpath for project: "+nature.getProject()+" (initialization not finished).");
-                            }
                         }
                     }
                 }catch(Exception e){
                     Log.log(e);
                 }
             }
+
+            // Get the complete python path from the system python path manager
+            Collection<String> pythonpath = new SystemPythonNature(this.interpreterManager, interpreter).getPythonPathNature().getCompleteProjectPythonPath(interpreter, this.interpreterManager);
             return new Tuple<Collection<String>, IPythonNature>(pythonpath, null);
         }
-        
+
         return null;
     }
 
