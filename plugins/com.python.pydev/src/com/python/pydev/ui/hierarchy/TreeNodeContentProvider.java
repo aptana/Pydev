@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelP
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
+import org.python.pydev.editor.refactoring.HierarchyNodeModel;
 
 
 public class TreeNodeContentProvider implements ITreeContentProvider {

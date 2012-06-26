@@ -55,7 +55,7 @@ public class PyShowOutline extends PyAction{
             return registered;
         }
         
-        registered = (IEditorActionDelegate) ExtensionHelper.getParticipant(getExtensionName(), false);
+        registered = (IEditorActionDelegate) ExtensionHelper.getParticipant(getExtensionName());
         return registered;
     }
 

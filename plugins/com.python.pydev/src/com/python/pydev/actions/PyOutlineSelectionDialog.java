@@ -46,7 +46,9 @@ import org.python.pydev.editor.codecompletion.revisited.modules.SourceModule;
 import org.python.pydev.editor.model.ItemPointer;
 import org.python.pydev.editor.model.Location;
 import org.python.pydev.editor.refactoring.AbstractPyRefactoring;
+import org.python.pydev.editor.refactoring.HierarchyNodeModel;
 import org.python.pydev.editor.refactoring.IPyRefactoring;
+import org.python.pydev.editor.refactoring.IPyRefactoring2;
 import org.python.pydev.editor.refactoring.RefactoringRequest;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.ClassDef;
@@ -55,8 +57,6 @@ import org.python.pydev.parser.visitors.scope.ASTEntry;
 import org.python.pydev.parser.visitors.scope.DefinitionsASTIteratorVisitor;
 import org.python.pydev.ui.dialogs.TreeSelectionDialog;
 
-import com.python.pydev.refactoring.IPyRefactoring2;
-import com.python.pydev.ui.hierarchy.HierarchyNodeModel;
 import com.python.pydev.ui.hierarchy.TreeNode;
 import com.python.pydev.ui.hierarchy.TreeNodeContentProvider;
 

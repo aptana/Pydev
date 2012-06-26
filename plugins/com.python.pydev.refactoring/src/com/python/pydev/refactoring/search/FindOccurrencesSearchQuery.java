@@ -26,11 +26,11 @@ import org.python.pydev.core.Tuple;
 import org.python.pydev.core.docutils.PySelection;
 import org.python.pydev.core.docutils.StringUtils;
 import org.python.pydev.core.log.Log;
+import org.python.pydev.editor.refactoring.IPyRefactoring2;
 import org.python.pydev.editor.refactoring.RefactoringRequest;
 import org.python.pydev.editorinput.PySourceLocatorBase;
 import org.python.pydev.parser.visitors.scope.ASTEntry;
 
-import com.python.pydev.refactoring.IPyRefactoring2;
 import com.python.pydev.refactoring.actions.PyFindAllOccurrences;
 import com.python.pydev.refactoring.refactorer.search.AbstractPythonSearchQuery;
 import com.python.pydev.refactoring.wizards.rename.AbstractRenameRefactorProcess;

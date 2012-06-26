@@ -28,7 +28,7 @@ public interface IPyRefactoring {
 
 
     /**
-     * Rename something (class, method, local...)
+     * Rename something (class, method, local...). Returns null to indicate no rename was performed.
      */
     public String rename(RefactoringRequest request);
 
