@@ -179,6 +179,9 @@ public class PydevPrefsInitializer  extends AbstractPreferenceInitializer{
         //source locator
         node.putInt(PySourceLocatorPrefs.ON_SOURCE_NOT_FOUND, PySourceLocatorPrefs.DEFAULT_ON_FILE_NOT_FOUND_IN_DEBUGGER);
         node.putInt(PySourceLocatorPrefs.FILE_CONTENTS_TIMEOUT, PySourceLocatorPrefs.DEFAULT_FILE_CONTENTS_TIMEOUT);
+
+        //root
+        node.putBoolean(PydevRootPrefs.PHONE_HOME, PydevRootPrefs.DEFAULT_PHONE_HOME);
     }
     
 

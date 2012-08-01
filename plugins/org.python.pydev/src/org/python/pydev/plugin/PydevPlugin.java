@@ -49,6 +49,7 @@ import org.python.pydev.logging.ping.ILogPing;
 import org.python.pydev.plugin.nature.PythonNature;
 import org.python.pydev.plugin.nature.SystemPythonNature;
 import org.python.pydev.plugin.preferences.PydevPrefs;
+import org.python.pydev.plugin.preferences.PydevRootPrefs;
 import org.python.pydev.ui.ColorCache;
 import org.python.pydev.ui.interpreters.IronpythonInterpreterManager;
 import org.python.pydev.ui.interpreters.JythonInterpreterManager;
@@ -61,7 +62,22 @@ import org.python.pydev.ui.interpreters.PythonInterpreterManager;
 public class PydevPlugin extends AbstractUIPlugin  {
     
     public static final String version = "REPLACE_VERSION";
-    
+
+    private static final ILogPing NO_OP_LOG_PING = new ILogPing() {
+		
+		public void stop() {
+		}
+		
+		public void send() {
+		}
+		
+		public void addPingStartPlugin() {
+		}
+		
+		public void addPingOpenEditor() {
+		}
+	};
+
     // ----------------- SINGLETON THINGS -----------------------------
     public static IBundleInfo info;
     public static IBundleInfo getBundleInfo(){
@@ -228,49 +244,42 @@ public class PydevPlugin extends AbstractUIPlugin  {
         
     }
 	private void handlePing() {
-		try {
-			File base;
+        boolean phoneHome = PydevPrefs.getPreferences().getBoolean(PydevRootPrefs.PHONE_HOME);
+
+        if (phoneHome) {
 			try {
-				IPath stateLocation = plugin.getStateLocation();
-			    String osString = stateLocation.toOSString();
-			    if (osString.length() > 0) {
-			        char c = osString.charAt(osString.length() - 1);
-			        if (c != '\\' && c != '/') {
-			            osString += '/';
-			        }
-			    }
-			    base = new File(osString);
-			    if(!base.exists()){
-			    	base.mkdirs();
-			    }
+				File base;
+				try {
+					IPath stateLocation = plugin.getStateLocation();
+				    String osString = stateLocation.toOSString();
+				    if (osString.length() > 0) {
+				        char c = osString.charAt(osString.length() - 1);
+				        if (c != '\\' && c != '/') {
+				            osString += '/';
+				        }
+				    }
+				    base = new File(osString);
+				    if(!base.exists()){
+				    	base.mkdirs();
+				    }
+				} catch (Exception e) {
+				    //it may fail in tests... (save it in default folder in this cases)
+				    Log.logInfo("Error getting persisting folder", e);
+				    base = new File(".");
+				}
+				File file = new File(base, "ping.log");
+				
+				asyncLogPing = new AsyncLogPing(REF.getFileAbsolutePath(file));
 			} catch (Exception e) {
-			    //it may fail in tests... (save it in default folder in this cases)
-			    Log.logInfo("Error getting persisting folder", e);
-			    base = new File(".");
+				Log.log(e);
+				
+				//Cannot fail: create empty stub!
+				asyncLogPing = NO_OP_LOG_PING;
 			}
-			File file = new File(base, "ping.log");
-			
-			asyncLogPing = new AsyncLogPing(REF.getFileAbsolutePath(file));
-		} catch (Exception e) {
-			Log.log(e);
-			
-			//Cannot fail: create empty stub!
-			asyncLogPing = new ILogPing() {
-				
-				public void stop() {
-				}
-				
-				public void send() {
-				}
-				
-				public void addPingStartPlugin() {
-				}
-				
-				public void addPingOpenEditor() {
-				}
-			};
-		}
-		
+        } else {
+        	asyncLogPing = NO_OP_LOG_PING;
+        }
+
 		if(!Platform.inDevelopmentMode() || ILogPing.FORCE_SEND_WHEN_IN_DEV_MODE){
 			Job job = new Job("Sending Ping...") //$NON-NLS-1$
 			{

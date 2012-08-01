@@ -6,24 +6,32 @@
  */
 package org.python.pydev.plugin.preferences;
 
-import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.python.pydev.core.docutils.StringUtils;
 import org.python.pydev.plugin.PydevPlugin;
 
-public class PydevRootPrefs  extends PreferencePage implements IWorkbenchPreferencePage{
+public class PydevRootPrefs extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
 
+	public static final String PHONE_HOME = "PHONE_HOME";
+	public static final boolean DEFAULT_PHONE_HOME = true;
+
+	private BooleanFieldEditor phoneHome;
 
     public PydevRootPrefs() {
+        setPreferenceStore(PydevPlugin.getDefault().getPreferenceStore());
         setDescription(StringUtils.format("PyDev version: %s", PydevPlugin.version)); 
     }
 
-    protected Control createContents(Composite parent) {
-        return parent;
-    }
+    protected void createFieldEditors() {
+        Composite p = getFieldEditorParent();
+        phoneHome = new BooleanFieldEditor(
+        		PHONE_HOME, "Phone home (critical for usage reporting!)", BooleanFieldEditor.SEPARATE_LABEL, p);
+        addField(phoneHome);
+	}
 
     public void init(IWorkbench workbench) {
     }
