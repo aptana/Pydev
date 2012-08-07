@@ -155,8 +155,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements IScriptCon
                     if (isCaretInEditableRange()) {
                         if (!inCompletion && event.keyCode == SWT.PAGE_UP) {
                             event.doit = false;
-                            List<String> commands = history.getAsList();
-                            List<String> commandsToExecute = ScriptConsoleHistorySelector.select(commands);
+                            List<String> commandsToExecute = ScriptConsoleHistorySelector.select(history);
                             if (commandsToExecute != null) {
                                 //remove the current command (substituted by the one gotten from page up)
                                 listener.setCommandLine("");

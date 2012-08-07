@@ -32,6 +32,18 @@ public class StringUtilsTest extends TestCase {
             e.printStackTrace();
         }
     }
+    
+    public void testNthIndexOf() {
+        assertEquals(-1, StringUtils.nthIndexOf("", '.', 0));
+        assertEquals(0, StringUtils.nthIndexOf(".", '.', 1));
+        assertEquals(1, StringUtils.nthIndexOf("...", '.', 2));
+        assertEquals(2, StringUtils.nthIndexOf("...", '.', 3));
+        assertEquals(-1, StringUtils.nthIndexOf("...", '.', 4));
+        assertEquals(1, StringUtils.nthIndexOf("A.B.C.", '.', 1));
+        assertEquals(3, StringUtils.nthIndexOf("A.B.C.", '.', 2));
+        assertEquals(5, StringUtils.nthIndexOf("A.B.C.", '.', 3));
+        assertEquals(-1, StringUtils.nthIndexOf("A.B.C.", '.', 4));
+    }
 
     /**
      * Test method for {@link StringUtils#joinIterable(Iterable, String)}.

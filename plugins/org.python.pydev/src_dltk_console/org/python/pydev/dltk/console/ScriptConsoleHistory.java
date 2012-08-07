@@ -10,12 +10,18 @@
 package org.python.pydev.dltk.console;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.python.pydev.core.docutils.StringUtils;
 import org.python.pydev.core.log.Log;
+import org.python.pydev.dltk.console.ui.ScriptConsoleUIConstants;
+import org.python.pydev.plugin.PydevPlugin;
 
 /**
  * Handles the history so that the user can do Ctrl+up / Ctrl+down
@@ -26,6 +32,11 @@ public class ScriptConsoleHistory {
      * Holds the history in an easy way to handle it.
      */
     private final List<String> lines;
+
+    /**
+     * Index of the starting point of local history
+     */
+    private int localHistoryStart;
 
     /**
      * Holds the position of the current line in the history.
@@ -42,11 +53,26 @@ public class ScriptConsoleHistory {
      */
     private String matchStart = "";
 
+    /**
+     * Set to true once history has been closed
+     */
+    private volatile boolean closed = false;
+
+    
     public ScriptConsoleHistory() {
-        this.lines = new ArrayList<String>();
-        this.lines.add(""); //$NON-NLS-1$
-        this.currLine = 0;
-        this.historyAsDoc = new Document();
+        IEclipsePreferences prefs =
+                InstanceScope.INSTANCE.getNode(PydevPlugin.DEFAULT_PYDEV_SCOPE);
+
+        String globalHistory = prefs.get(ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY, "");
+        String[] globalHistoryLines = globalHistory.split("\n");
+        this.lines = new ArrayList<String>(Arrays.asList(globalHistoryLines));
+        if (this.lines.size() == 0 || this.lines.get(this.lines.size() - 1).length() != 0) {
+            this.lines.add(""); //$NON-NLS-1$
+        }
+        localHistoryStart = this.lines.size() - 1;
+
+        this.currLine = this.lines.size() - 1;
+        this.historyAsDoc = new Document(globalHistory);
     }
 
     /**
@@ -157,5 +183,51 @@ public class ScriptConsoleHistory {
 
     public void setMatchStart(String string) {
         this.matchStart = string;
+    }
+
+    /**
+     * Close the current history, appending to the global history any new commands
+     */
+    public synchronized void close() {
+        // synchronized because we can be closed twice from different threads, so we
+        // have protection around the read/update/write of INTERACTIVE_CONSOLE_PERSISTENT_HISTORY
+        if (closed) 
+            return;
+        closed = true;
+        IEclipsePreferences prefs =
+                InstanceScope.INSTANCE.getNode(PydevPlugin.DEFAULT_PYDEV_SCOPE);
+
+        int historyMaxEntries = prefs.getInt(
+                ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY_MAXIMUM_ENTRIES,
+                ScriptConsoleUIConstants.DEFAULT_INTERACTIVE_CONSOLE_PERSISTENT_HISTORY_MAXIMUM_ENTRIES);
+        StringBuffer globalHistory = new StringBuffer(prefs.get(
+                ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY, ""));
+        for (int i = localHistoryStart; i < currLine; i++) {
+            globalHistory.append(lines.get(i));
+            globalHistory.append('\n');
+        }
+        
+        String globalHistoryString = globalHistory.toString();
+        int count = StringUtils.count(globalHistoryString, '\n');
+        if (historyMaxEntries > 0 && count > historyMaxEntries) {
+            int nthIndexOf = StringUtils.nthIndexOf(globalHistoryString, '\n', count - historyMaxEntries);
+            globalHistoryString = globalHistoryString.substring(nthIndexOf+1);            
+        }
+        prefs.put(ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY, globalHistoryString);
+    }
+
+    /**
+     * Delete the local and current global history.
+     */
+    public void clear() {
+        IEclipsePreferences prefs =
+                InstanceScope.INSTANCE.getNode(PydevPlugin.DEFAULT_PYDEV_SCOPE);
+        prefs.put(ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY, "");
+
+        lines.clear();
+        lines.add("");
+        localHistoryStart = 0;
+        historyAsDoc.set("");
+        currLine = 0;
     }
 }

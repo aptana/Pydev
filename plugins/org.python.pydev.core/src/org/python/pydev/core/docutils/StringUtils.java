@@ -116,6 +116,24 @@ public final class StringUtils {
 
     public static final String EMPTY = "";
 
+    /**
+     * Find the nth index of character in string
+     * @param string to search
+     * @param character to search for
+     * @param nth count
+     * @return count <= 0 returns -1. count > number of occurances of character returns -1. 
+     * Otherwise return index of nth occurence of character
+     */
+    public static int nthIndexOf(final String string, final char character, int nth) {
+        if (nth <= 0) {
+            return -1;
+        }
+        int pos = string.indexOf(character);
+        while (--nth > 0 && pos != -1)
+            pos = string.indexOf(character, pos + 1);
+        return pos;
+    }
+
     private static final boolean DEBUG = false;
 
     /**
