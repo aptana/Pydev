@@ -26,7 +26,7 @@ import org.python.pydev.dltk.console.ui.internal.fromeclipse.HistoryElementListS
  *
  * @author Fabio
  */
-public class ScriptConsoleHistorySelector{
+public class ScriptConsoleHistorySelector {
 
     /**
      * Selects a list of strings from a list of strings
@@ -72,13 +72,12 @@ public class ScriptConsoleHistorySelector{
         dialog.setSize(100, 25); //in number of chars
         dialog.setMessage("Select command(s) to be executed");
         dialog.setMultipleSelection(true);
-        
-        
-        if(dialog.open() == SelectionDialog.OK){
+
+        if (dialog.open() == SelectionDialog.OK) {
             Object[] result = dialog.getResult();
-            if(result != null){
+            if (result != null) {
                 ArrayList<String> list = new ArrayList<String>();
-                for(Object o:result){
+                for (Object o : result) {
                     list.add(o.toString());
                 }
                 return list;
@@ -91,7 +90,7 @@ public class ScriptConsoleHistorySelector{
      * @return a label provider that'll show the history command as a string
      */
     private static ILabelProvider getLabelProvider() {
-        return new ILabelProvider(){
+        return new ILabelProvider() {
 
             public Image getImage(Object element) {
                 return null;
@@ -112,8 +111,8 @@ public class ScriptConsoleHistorySelector{
             }
 
             public void removeListener(ILabelProviderListener listener) {
-            }};
+            }
+        };
     }
-    
-    
+
 }
