@@ -33,6 +33,18 @@ public class StringUtilsTest extends TestCase {
         }
     }
     
+    public void testNthIndexOf() {
+        assertEquals(-1, StringUtils.nthIndexOf("", '.', 0));
+        assertEquals(0, StringUtils.nthIndexOf(".", '.', 1));
+        assertEquals(1, StringUtils.nthIndexOf("...", '.', 2));
+        assertEquals(2, StringUtils.nthIndexOf("...", '.', 3));
+        assertEquals(-1, StringUtils.nthIndexOf("...", '.', 4));
+        assertEquals(1, StringUtils.nthIndexOf("A.B.C.", '.', 1));
+        assertEquals(3, StringUtils.nthIndexOf("A.B.C.", '.', 2));
+        assertEquals(5, StringUtils.nthIndexOf("A.B.C.", '.', 3));
+        assertEquals(-1, StringUtils.nthIndexOf("A.B.C.", '.', 4));
+    }
+
     public void testFormat() {
         assertEquals("teste", StringUtils.format("%s", new Object[]{"teste"}));
         assertEquals("teste 1", StringUtils.format("%s 1", new Object[]{"teste"}));

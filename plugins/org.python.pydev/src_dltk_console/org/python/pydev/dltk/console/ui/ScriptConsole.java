@@ -202,9 +202,12 @@ public abstract class ScriptConsole extends TextConsole implements ICommandHandl
      */
     public void terminate() {
         try {
+            if (history != null)
+                history.close();
             interpreter.close();
         } catch (Exception e) {
         }
+        history = null;
         interpreter = null;
     }
 

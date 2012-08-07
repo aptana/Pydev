@@ -12,7 +12,6 @@ package org.python.pydev.dltk.console.ui.internal;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
@@ -156,8 +155,7 @@ public class ScriptConsoleViewer extends TextConsoleViewer implements IScriptCon
                     if (isCaretInEditableRange()) {
                         if(!inCompletion && event.keyCode == SWT.PAGE_UP){
                             event.doit = false;
-                            List<String> commands = history.getAsList();
-                            List<String> commandsToExecute = ScriptConsoleHistorySelector.select(commands);
+                            List<String> commandsToExecute = ScriptConsoleHistorySelector.select(history);
                             if(commandsToExecute != null){
                                 //remove the current command (substituted by the one gotten from page up)
                                 listener.setCommandLine("");

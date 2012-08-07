@@ -9,6 +9,7 @@ package org.python.pydev.debug.newconsole.prefs;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -16,6 +17,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.python.pydev.debug.core.PydevDebugPlugin;
 import org.python.pydev.debug.newconsole.PydevConsoleConstants;
+import org.python.pydev.dltk.console.ui.ScriptConsoleUIConstants;
+import org.python.pydev.plugin.PydevPlugin;
 import org.python.pydev.utils.MultiStringFieldEditor;
 
 public class InteractiveConsolePrefs extends FieldEditorPreferencePage implements IWorkbenchPreferencePage{
@@ -57,6 +60,15 @@ public class InteractiveConsolePrefs extends FieldEditorPreferencePage implement
         addField(new BooleanFieldEditor(PydevConsoleConstants.INTERACTIVE_CONSOLE_FOCUS_ON_CONSOLE_START, 
                 "Focus console when it's started?", BooleanFieldEditor.SEPARATE_LABEL, p));
         
+        addField(new IntegerFieldEditor(ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY_MAXIMUM_ENTRIES,
+                "Maximum number of lines to\nstore in global history\n(0 for unlimited):", p) {
+            // We are trying to set a preference that is in a different store, but logically lives within this UI
+            @Override
+            public IPreferenceStore getPreferenceStore() {
+                return PydevPlugin.getDefault().getPreferenceStore();
+            }
+        });
+
         addField(new BooleanFieldEditor(PydevConsoleConstants.INTERACTIVE_CONSOLE_SEND_INITIAL_COMMAND_WHEN_CREATED_FROM_EDITOR, 
                 "When creating console send\ncurrent selection/editor\ncontents for execution?", BooleanFieldEditor.SEPARATE_LABEL, p));
         

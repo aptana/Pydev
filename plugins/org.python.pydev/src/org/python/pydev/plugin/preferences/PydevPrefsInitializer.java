@@ -16,6 +16,7 @@ import org.osgi.service.prefs.Preferences;
 import org.python.pydev.builder.PyDevBuilderPrefPage;
 import org.python.pydev.builder.todo.PyTodoPrefPage;
 import org.python.pydev.core.IInterpreterManager;
+import org.python.pydev.dltk.console.ui.ScriptConsoleUIConstants;
 import org.python.pydev.editor.codefolding.PyDevCodeFoldingPrefPage;
 import org.python.pydev.editor.commentblocks.CommentBlocksPreferences;
 import org.python.pydev.editor.correctionassist.docstrings.DocstringsPrefPage;
@@ -179,6 +180,10 @@ public class PydevPrefsInitializer  extends AbstractPreferenceInitializer{
         //source locator
         node.putInt(PySourceLocatorPrefs.ON_SOURCE_NOT_FOUND, PySourceLocatorPrefs.DEFAULT_ON_FILE_NOT_FOUND_IN_DEBUGGER);
         node.putInt(PySourceLocatorPrefs.FILE_CONTENTS_TIMEOUT, PySourceLocatorPrefs.DEFAULT_FILE_CONTENTS_TIMEOUT);
+        
+        //console history
+        node.putInt(ScriptConsoleUIConstants.INTERACTIVE_CONSOLE_PERSISTENT_HISTORY_MAXIMUM_ENTRIES,
+                ScriptConsoleUIConstants.DEFAULT_INTERACTIVE_CONSOLE_PERSISTENT_HISTORY_MAXIMUM_ENTRIES);
     }
     
 
