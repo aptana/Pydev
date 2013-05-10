@@ -26,6 +26,8 @@ import org.python.pydev.plugin.preferences.IPydevPreferencesProvider2;
 import org.python.pydev.red_core.preferences.PydevRedCorePreferencesInitializer;
 import org.python.pydev.utils.LabelFieldEditor;
 import org.python.pydev.utils.LinkFieldEditor;
+import org.python.pydev.core.FontUtils;
+import org.python.pydev.core.IFontUsage;
 
 import com.aptana.editor.common.CommonEditorPlugin;
 import com.aptana.theme.IThemeManager;
@@ -225,7 +227,7 @@ public class AddRedCorePreferences implements IPydevPreferencesProvider, IPydevP
                 "Prompt:     console.prompt\n" + "", appearanceComposite);
         Label labelControl = labelFieldEditor.getLabelControl(appearanceComposite);
         try {
-            FontData labelFontData = new FontData("Courier New", 8, SWT.NONE);
+            FontData labelFontData = FontUtils.getFontData(IFontUsage.SMALLUI, false);
             labelControl.setFont(new Font(labelControl.getDisplay(), labelFontData));
         } catch (Throwable e) {
             //ignore

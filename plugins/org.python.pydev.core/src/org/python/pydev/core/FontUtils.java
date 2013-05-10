@@ -19,7 +19,7 @@ import com.aptana.shared_core.structure.Tuple;
  * <tt>Font</tt>s.</p>
  * 
  * @author André Berg
- * @version 0.1
+ * @version 0.2
  */
 public class FontUtils {
 
@@ -56,7 +56,11 @@ public class FontUtils {
                     fontName = "Monaco";
                     fontHeight = 11;
                     break;
-
+                case IFontUsage.SMALLUI:
+                    fontName = "Monaco";
+                    fontHeight = 9;
+                    break;
+                    
                 default:
                     throw new IllegalArgumentException(
                             "Invalid usage. See org.python.pydev.core.IFontUsage for valid values.");
@@ -79,6 +83,10 @@ public class FontUtils {
                     fontName = "Courier New";
                     fontHeight = 9;
                     break;
+                case IFontUsage.SMALLUI:
+                    fontName = "Courier New";
+                    fontHeight = 8;
+                    break;
 
                 default:
                     throw new IllegalArgumentException(
@@ -87,17 +95,35 @@ public class FontUtils {
         }
         return new Tuple<String, Integer>(fontName, fontHeight);
     }
-
+    
+    
+    /**
+     * Calls {@link #getFontData(int, boolean)} with {@link SWT#NONE} for the style param.
+     * @see {@link #getFontData(int, int, boolean)}
+     */
     public static FontData getFontData(int usage, boolean useDefaultJFaceFontIfPossible) {
+        return getFontData(usage, SWT.NONE, useDefaultJFaceFontIfPossible);
+    }
+    
+    /**
+     * Select a monospaced font based on intended usage. 
+     * Can be used to provide a consistend code font size between platforms.
+     * 
+     * @param usage intended usage. See {@link IFontUsage} for valid values.
+     * @param style SWT style constants mask
+     * @param useDefaultJFaceFontIfPossible
+     * @return {@link FontData} object
+     */
+    public static FontData getFontData(int usage, int style, boolean useDefaultJFaceFontIfPossible) {
         if (useDefaultJFaceFontIfPossible) {
             FontData[] textFontData = JFaceResources.getTextFont().getFontData();
             if (textFontData.length == 1) {
                 return textFontData[0];
             }
         }
-        Tuple<String, Integer> codeFontDetails = FontUtils.getCodeFontNameAndHeight(IFontUsage.IMAGECACHE);
+        Tuple<String, Integer> codeFontDetails = FontUtils.getCodeFontNameAndHeight(usage);
         String fontName = codeFontDetails.o1;
         int base = codeFontDetails.o2.intValue();
-        return new FontData(fontName, base, SWT.BOLD);
+        return new FontData(fontName, base, style);
     }
 }
