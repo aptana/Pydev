@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2005-2011 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2005-2013 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Eclipse Public License (EPL).
  * Please see the license.txt included with this distribution for details.
  * Any modifications to this file must keep this entire header intact.
@@ -7,14 +7,10 @@
 package com.python.pydev.runalltests2;
 
 //reference: http://www.eclipsezone.com/eclipse/forums/t65337.html
-import java.lang.reflect.Modifier;
-import java.util.Enumeration;
-
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import junit.runner.ClassPathTestCollector;
-import junit.runner.TestCollector;
+import junit3.runner.ClassPathTestCollector;
+import junit3.runner.TestCollector;
 
 public class AllTests {
 
@@ -27,7 +23,7 @@ public class AllTests {
     public static final String SUFFIX = "Test";
 
     private static void addTestsToSuite(TestCollector collector, TestSuite suite) {
-        Enumeration e = collector.collectTests();
+        Enumeration<String> e = collector.collectTests();
         while (e.hasMoreElements()) {
             String name = (String) e.nextElement();
             try {
@@ -48,8 +44,14 @@ public class AllTests {
     }
 
     public static Test suite() {
+
+        BundleTestCollector testCollector = new BundleTestCollector();
         TestSuite suite = new TestSuite(AllTests.class.getName());
-        addTestsToSuite(new ClassFileDetector(), suite);
+        testCollector.collectTests(suite, "org.python", "org.python", "*Test");
+        testCollector.collectTests(suite, "com.python", "com.python", "*Test");
+        testCollector.collectTests(suite, "com.aptana.interactive_console", "com.aptana.interactive_console", "*Test");
+        testCollector.collectTests(suite, "com.aptana.js.interactive_console", "com.aptana.js.interactive_console", "*Test");
+        // add more lines collectTests(...) calls if necessary
         if (suite.countTestCases() == 0) {
             throw new Error("There are no test cases to run");
         } else {
