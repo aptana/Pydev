@@ -7,7 +7,11 @@
 package com.python.pydev.runalltests2;
 
 //reference: http://www.eclipsezone.com/eclipse/forums/t65337.html
+import java.lang.reflect.Modifier;
+import java.util.Enumeration;
+
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit3.runner.ClassPathTestCollector;
 import junit3.runner.TestCollector;
@@ -15,6 +19,7 @@ import junit3.runner.TestCollector;
 public class AllTests {
 
     private static class ClassFileDetector extends ClassPathTestCollector {
+        @Override
         protected boolean isTestClass(String classFileName) {
             return classFileName.endsWith(SUFFIX + ".class") && isValidTest(classNameFromFile(classFileName));
         }
@@ -25,7 +30,7 @@ public class AllTests {
     private static void addTestsToSuite(TestCollector collector, TestSuite suite) {
         Enumeration<String> e = collector.collectTests();
         while (e.hasMoreElements()) {
-            String name = (String) e.nextElement();
+            String name = e.nextElement();
             try {
                 suite.addTestSuite((Class<? extends TestCase>) Class.forName(name));
             } catch (ClassNotFoundException e1) {
@@ -50,7 +55,8 @@ public class AllTests {
         testCollector.collectTests(suite, "org.python", "org.python", "*Test");
         testCollector.collectTests(suite, "com.python", "com.python", "*Test");
         testCollector.collectTests(suite, "com.aptana.interactive_console", "com.aptana.interactive_console", "*Test");
-        testCollector.collectTests(suite, "com.aptana.js.interactive_console", "com.aptana.js.interactive_console", "*Test");
+        testCollector.collectTests(suite, "com.aptana.js.interactive_console", "com.aptana.js.interactive_console",
+                "*Test");
         // add more lines collectTests(...) calls if necessary
         if (suite.countTestCases() == 0) {
             throw new Error("There are no test cases to run");
