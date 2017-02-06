@@ -22,7 +22,7 @@ timestamps() {
 
 			// If not a PR, trigger downstream builds for same branch
 			if (!env.BRANCH_NAME.startsWith('PR-')) {
-				build job: "Studio3/studio3-rcp/${env.BRANCH_NAME}", wait: false
+				build job: "Studio/studio3-rcp/${env.BRANCH_NAME}", wait: false
 			}
 		} catch (e) {
 			// if any exception occurs, mark the build as failed
