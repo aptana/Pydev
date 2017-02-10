@@ -19,6 +19,8 @@ import java.util.Properties;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IStartup;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsoleOutputStream;
@@ -550,7 +552,7 @@ public class JythonPlugin extends AbstractUIPlugin {
     /**
      * @return the console to use
      */
-    private static MessageConsole getConsole() {
+    private static synchronized MessageConsole getConsole() {
         try {
             if (fConsole == null) {
                 fConsole = new MessageConsole("PyDev Scripting", JythonPlugin.getBundleInfo().getImageCache()
@@ -617,4 +619,20 @@ public class JythonPlugin extends AbstractUIPlugin {
         return new InteractiveConsoleWrapper();
     }
 
+	/**
+	 * Create the PyDev Scripting as part of the Eclipse startup. This can be
+	 * done as part of startup so that future creations of IPythonInterpreter
+	 * (with newPythonInterpreter) don't cause the PyDev Scripting console to
+	 * pop-up on top of the current interactive console.
+	 */
+	public void createPyDevScriptingConsole() {
+		if (fConsole == null) {
+			Display.getDefault().asyncExec(new Runnable() {
+				public void run() {
+					getConsole();
+				}
+			});
+		}
+	}
+    
 }
