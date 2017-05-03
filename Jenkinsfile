@@ -12,7 +12,7 @@ timestamps() {
 			def studio3Repo = "file://${env.WORKSPACE}/studio3-core/dist/"
 			buildPlugin('Feature Build') {
 				dependencies = [
-					'studio3-core': 'Studio/studio3'
+					'studio3-core': '../studio3'
 				]
 				builder = 'com.aptana.pydev.build'
 				properties = [
@@ -22,7 +22,7 @@ timestamps() {
 
 			// If not a PR, trigger downstream builds for same branch
 			if (!env.BRANCH_NAME.startsWith('PR-')) {
-				build job: "Studio/studio3-rcp/${env.BRANCH_NAME}", wait: false
+				build job: "../studio3-rcp/${env.BRANCH_NAME}", wait: false
 			}
 		} catch (e) {
 			// if any exception occurs, mark the build as failed
