@@ -1,0 +1,13 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.python.pydev</groupId>
+	<artifactId>com.aptana.pydev.feature</artifactId>
+	<version>3.0.0-SNAPSHOT</version>
+	<packaging>eclipse-feature</packaging>
+
+	<parent>
+		<groupId>org.python.pydev</groupId>
+		<artifactId>org.python.pydev.features</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+</project>

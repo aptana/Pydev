@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyDev Refactoring Tests
+Bundle-SymbolicName: com.python.pydev.refactoring.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Aptana Inc.
+Fragment-Host: com.python.pydev.refactoring
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit
+Import-Package: com.python.pydev.analysis.tests,
+ org.python.pydev.core.tests,
+ org.python.pydev.parser.tests,
+ org.python.pydev.tests

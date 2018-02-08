@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyDev Refactoring Tests
+Bundle-SymbolicName: org.python.pydev.refactoring.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Aptana Inc.
+Fragment-Host: org.python.pydev.refactoring
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit
+Import-Package: org.python.pydev.editor.codecompletion.shell,
+ org.python.pydev.parser.tests,
+ org.python.pydev.tests
+Bundle-ClassPath: lib/xstream-1.4.4.jar,
+ .
