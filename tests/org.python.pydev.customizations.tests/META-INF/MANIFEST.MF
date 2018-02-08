@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyDev Customizations Tests
+Bundle-SymbolicName: org.python.pydev.customizations.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Aptana Inc.
+Fragment-Host: org.python.pydev.customizations
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit
+Import-Package: org.python.pydev.tests,
+ org.python.pydev.core.tests

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.aptana.pydev.feature_3.0.0.qualifier.jar" id="com.aptana.pydev.feature" version="3.0.0.qualifier">
+      <category name="org.python.pydev"/>
+   </feature>
+   <category-def name="org.python.pydev" label="Aptana Python Support"/>
+</site>

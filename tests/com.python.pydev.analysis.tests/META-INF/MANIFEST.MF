@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyDev Analysis Tests
+Bundle-SymbolicName: com.python.pydev.analysis.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Aptana Inc.
+Fragment-Host: com.python.pydev.analysis
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit
+Import-Package: org.python.pydev.core.tests,
+ org.python.pydev.tests
+Export-Package: com.python.pydev.analysis.tests

@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PyDev Core Tests
+Bundle-SymbolicName: org.python.pydev.core.tests
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Aptana Inc.
+Fragment-Host: org.python.pydev.core
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.junit
+Export-Package: org.python.pydev.core.resource_stubs,
+ org.python.pydev.core.tests
