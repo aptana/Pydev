@@ -1,12 +1,33 @@
 #!groovy
 @Library('pipeline-build') _
 
-timestamps() {
-	node('linux && ant && eclipse && jdk && vncserver') {
-		try {
-			stage('Checkout') {
-				checkout scm
-				gitCommit = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+// Keep logs/reports/etc of last 3 builds, only keep build artifacts of last build
+properties([
+	buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '1')),
+	// specify projects to allow to copy artifacts with a comma-separated list.
+	copyArtifactPermission("/aptana-studio-sync/sync-nightlies-aptana-${env.BRANCH_NAME},../studio3-rcp/${env.BRANCH_NAME}"),
+])
+
+timestamps {
+	def targetBranch = 'development'
+	def isPR = false
+
+	// node('((linux && vncserver) || osx) && jdk') {
+	node('linux && vncserver && jdk') {
+		stage('Checkout') {
+			// checkout scm
+			// Hack for JENKINS-37658 - see https://support.cloudbees.com/hc/en-us/articles/226122247-How-to-Customize-Checkout-for-Pipeline-Multibranch
+			checkout([
+				$class: 'GitSCM',
+				branches: scm.branches,
+				extensions: scm.extensions + [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', honorRefspec: true, noTags: true, reference: '', shallow: true, depth: 30, timeout: 30]],
+				userRemoteConfigs: scm.userRemoteConfigs
+			])
+			isPR = env.BRANCH_NAME.startsWith('PR-')
+			if (isPR) {
+				targetBranch = env.CHANGE_TARGET
+			} else {
+				targetBranch = env.BRANCH_NAME
 			}
 
 			def studio3Repo = "file://${env.WORKSPACE}/studio3-core/dist/"
