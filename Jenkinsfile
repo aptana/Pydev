@@ -1,8 +1,6 @@
 #!groovy
-@Library('pipeline-build') _
-
-// Keep logs/reports/etc of last 3 builds, only keep build artifacts of last build
 properties([
+	// Keep logs/reports/etc of last 3 builds, only keep build artifacts of last build
 	buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '1')),
 	// specify projects to allow to copy artifacts with a comma-separated list.
 	copyArtifactPermission("/aptana-studio-sync/sync-nightlies-aptana-${env.BRANCH_NAME},../studio3-rcp/${env.BRANCH_NAME}"),
