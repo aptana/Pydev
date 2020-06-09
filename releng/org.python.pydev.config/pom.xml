@@ -13,10 +13,13 @@
 		<!-- by default assume studio3 git repo is a sibling of this repo on dev's machine -->
 		<studio3.p2.repo.url>file:${project.basedir}/../../../studio3/releng/com.aptana.studio.update/target/repository/</studio3.p2.repo.url>
 		<jarsigner.alias>appcelerator</jarsigner.alias>
-		<!-- DON'T CHECK THIS IN!!!! Developers should point to the keystore and password in their own envs! -->
-		<jarsigner.keystore>${env.HOME}/appcelerator.keystore</jarsigner.keystore>
-		<jarsigner.keypass></jarsigner.keypass>
-		<jarsigner.storepass></jarsigner.storepass>
+		<!-- To sign the plugins, you must supply the following properties via the command line:
+			jarsigner.keystore=/path/to.keystore
+			jarsigner.keypass=key_password
+			jarsigner.storepass=keystore_password
+			for example:
+			mvn clean verify -Djarsigner.keystore/Users/example/appcelerator.keystore -Djarsigner.keypass=changeme -Djarsigner.storepass=storepass
+		-->
 	</properties>
 
 	<repositories>
@@ -79,26 +82,6 @@
 					</environments>
 				</configuration>
 			</plugin>
-			<!-- Sign the JARs -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jarsigner-plugin</artifactId>
-				<version>1.2</version>
-				<configuration>
-					<keystore>${jarsigner.keystore}</keystore>
-					<storepass>${jarsigner.storepass}</storepass>
-					<alias>${jarsigner.alias}</alias>
-					<keypass>${jarsigner.keypass}</keypass>
-				</configuration>
-				<executions>
-					<execution>
-						<id>sign</id>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<!-- use last git commit timestamp as build qualifier for plugins -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -123,4 +106,40 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+ 		<profile>
+ 			<!-- We only sign the jars when the jarsigner.keystore property actually is provided and exists -->
+ 			<id>sign-jars</id>
+ 			<activation>
+ 				<file>
+ 					<exists>${jarsigner.keystore}</exists>
+ 				</file>
+ 			</activation>
+ 			<build>
+ 				<plugins>
+ 					<!-- Sign the JARs -->
+ 					<plugin>
+ 						<groupId>org.apache.maven.plugins</groupId>
+ 						<artifactId>maven-jarsigner-plugin</artifactId>
+ 						<version>1.2</version>
+ 						<configuration>
+ 							<keystore>${jarsigner.keystore}</keystore>
+ 							<storepass>${jarsigner.storepass}</storepass>
+ 							<alias>${jarsigner.alias}</alias>
+ 							<keypass>${jarsigner.keypass}</keypass>
+ 						</configuration>
+ 						<executions>
+ 							<execution>
+ 								<id>sign</id>
+ 								<goals>
+ 									<goal>sign</goal>
+ 								</goals>
+ 							</execution>
+ 						</executions>
+ 					</plugin>
+ 				</plugins>
+ 			</build>
+ 		</profile>
+ 	</profiles>
 </project>
