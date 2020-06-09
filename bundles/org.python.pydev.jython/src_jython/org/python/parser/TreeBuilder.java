@@ -110,7 +110,7 @@ public class TreeBuilder implements PythonGrammarTreeConstants {
             case JJTSINGLE_INPUT:
                 return new Interactive(makeStmts(arity));
             case JJTFILE_INPUT:
-                return new Module(makeStmts(arity));
+                return new org.python.parser.ast.Module(makeStmts(arity));
             case JJTEVAL_INPUT:
                 return new Expression(makeExpr());
 
