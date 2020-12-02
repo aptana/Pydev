@@ -5,7 +5,7 @@
 properties([
 	buildDiscarder(logRotator(numToKeepStr: '3', artifactNumToKeepStr: '1')),
 	// specify projects to allow to copy artifacts with a comma-separated list.
-	copyArtifactPermission("/aptana-studio-sync/sync-nightlies-aptana-${env.BRANCH_NAME},../studio3-rcp/${env.BRANCH_NAME}"),
+	copyArtifactPermission("/aptana-studio-sync/sync-nightlies-aptana-${env.BRANCH_NAME},../studio3-rcp/*"),
 ])
 timestamps {
 	def studio3RepoURL = ''
